@@ -15,15 +15,12 @@
 
 - Path API : Ada beberapa path API yang identik, namun dengan tipe yang berbeda. Path API yang dapat digunakan antara lain    :
   1. Products :
-      a. http://PROJECT_URL/api/products
-         Dapat digunakan untuk tipe GET dan POST.
-      b. http://PROJECT_URL/api/products/{id}
-         Dapat digunakan untuk tipe get by id, update, dan delete.
-  2. Orders :
-      a. http://PROJECT_URL/api/orders
-         Dapat digunakan untuk tipe GET dan POST.
-      b. http://PROJECT_URL/api/orders/{id}
-         Dapat digunakan untuk tipe get by id, update, dan delete.
+     - http://PROJECT_URL/api/products : Dapat digunakan untuk tipe GET dan POST
+     - http://PROJECT_URL/api/products/{id} : Dapat digunakan untuk tipe get by id, update, dan delete.
+       
+  3. Orders :
+     - http://PROJECT_URL/api/orders : Dapat digunakan untuk tipe GET dan POST.
+     - http://PROJECT_URL/api/orders/{id} : Dapat digunakan untuk tipe get by id, update, dan delete.
   
 - Upload Postman : Saya telah mengunggah file Postman di drive saya yang bisa digunakan untuk keperluan pengujian https://drive.google.com/drive/folders/1OlF3GHG39C_cB3LHoJ94CjQKxt-XvMsq?usp=sharing.
   
