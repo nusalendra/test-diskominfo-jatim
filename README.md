@@ -15,12 +15,12 @@
 
 - Path API
   Ada beberapa path API yang identik, namun dengan tipe yang berbeda. Path API yang dapat digunakan antara lain    :
-  > Products :
+  Products :
       1. http://PROJECT_URL/api/products
          Dapat digunakan untuk tipe GET dan POST.
       2. http://PROJECT_URL/api/products/{id}
          Dapat digunakan untuk tipe get by id, update, dan delete.
-  > Orders :
+  Orders :
       1. http://PROJECT_URL/api/orders
          Dapat digunakan untuk tipe GET dan POST.
       2. http://PROJECT_URL/api/orders/{id}
