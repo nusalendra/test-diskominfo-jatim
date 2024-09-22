@@ -23,7 +23,34 @@
      - http://PROJECT_URL/api/orders/{id} : Dapat digunakan untuk tipe get by id, update, dan delete.
   
 - Upload Postman : Saya telah mengunggah file Postman di drive saya yang bisa digunakan untuk keperluan pengujian https://drive.google.com/drive/folders/1OlF3GHG39C_cB3LHoJ94CjQKxt-XvMsq?usp=sharing.
-  
+
+- Error handling pada validasi create product
+  1. Jika nama produk bukan string, sistem menampilkan pesan: "The name must be a string!"
+  2. Jika nama produk sudah ada, sistem menampilkan pesan: "The product name already exists. Please choose a different name."
+  3. Jika harga bukan angka, sistem menampilkan pesan: "The price must be a number."
+  4. Jika harga kurang dari 1, sistem menampilkan pesan: "The price must be at least 1 or equal to 1!"
+  5. Jika stok bukan angka, sistem menampilkan pesan: "The stock must be a number."
+  6. Jika stok bernilai negatif, sistem menampilkan pesan: "The stock cannot be negative!"
+     
+- Error handling pada validasi update product
+  1. Jika name produk bukan string, sistem menampilkan pesan: "The name must be a string!"
+  2. Jika name produk sudah ada (tidak unik), sistem menampilkan pesan: "The product name already exists. Please choose a different name."
+  3. Jika price bukan angka, sistem menampilkan pesan: "The price must be a number."
+  4. Jika price kurang dari 1, sistem menampilkan pesan: "The price must be at least 1 or equal to 1!"
+  5. Jika stock bukan angka, sistem menampilkan pesan: "The stock must be a number."
+  6. Jika stock bernilai negatif, sistem menampilkan pesan: "The stock cannot be negative!"
+  7. Jika product tidak ditemukan, sistem menampilkan pesan: "Product not found" (status 404)
+     
+- Error Handling pada Validasi Order Produk
+  1. Jika id produk bukan angka, sistem menampilkan pesan: "The id must be a numeric!"
+  2. Jika quantity produk kurang dari 1, sistem menampilkan pesan: "The quantity must be at least 1!"
+     
+- Error Handling pada Penyimpanan Order Produk
+  1. Jika validasi gagal, sistem menampilkan pesan: "Validation failed" dengan daftar kesalahan (status 422).
+  2. Jika produk tidak ditemukan, sistem menampilkan pesan: "Product not found" (status 404).
+  3. Jika stok produk tidak mencukupi, sistem menampilkan pesan: "Product out of stock" (status 400).
+  4. Jika terjadi kesalahan pada penyimpanan order, sistem menampilkan pesan: "Order failed created! {error message}" (status 500).
+       
 - ERD Database : Terdapat ERD database yang dapat dilihat, dan ERD ini disusun berdasarkan pemikiran saya sendiri
   ![drawSQL-image-export-2024-09-22](https://github.com/user-attachments/assets/aad0aa7f-e8f0-42f8-bc42-5bb954b591fc)
 
