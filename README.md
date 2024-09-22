@@ -26,4 +26,7 @@
   
 - ERD Database : Terdapat ERD database yang dapat dilihat, dan ERD ini disusun berdasarkan pemikiran saya sendiri
   ![drawSQL-image-export-2024-09-22](https://github.com/user-attachments/assets/aad0aa7f-e8f0-42f8-bc42-5bb954b591fc)
-  
+
+  1. Tabel orders : Digunakan untuk menyimpan informasi data yang akan dipesan. Di sini, saya hanya memerlukan ID order untuk dapat terhubung dengan tabel order_product.
+  2. Tabel products : Digunakan untuk menyimpan informasi data products.
+  3. Tabel order_products : Tabel ini menyimpan pasangan ID dari tabel orders (yang berisi informasi tentang setiap order) dan tabel products (yang berisi informasi tentang setiap produk). Dengan menggunakan tabel pivot, dapat menghubungkan banyak order dengan banyak produk, sehingga satu order bisa mencakup beberapa produk, dan satu produk bisa ada di berbagai order. 
