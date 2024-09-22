@@ -11,15 +11,29 @@ class ProductController extends Controller
     public function index()
     {
         try {
-            $data = Product::all();
+            $products = Product::with('order')
+                ->get()
+                ->map(function ($product) {
+                    $totalSold = $product->order->sum('pivot.quantity');
+
+                    return [
+                        'id' => $product->id,
+                        'name' => $product->name,
+                        'price' => $product->price,
+                        'stock' => $product->stock,
+                        'sold' => $totalSold,
+                        'created_at' => $product->created_at,
+                        'updated_at' => $product->updated_at
+                    ];
+                });
 
             return response()->json([
                 'message' => 'Product List',
-                'data' => $data
-            ]);
+                'data' => $products
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve product: ' . $e->getMessage(),
+                'message' => 'Failed to retrieve products: ' . $e->getMessage(),
                 'data' => [],
             ], 500);
         }
@@ -55,9 +69,19 @@ class ProductController extends Controller
 
             $data->save();
 
+            $responseData = [
+                'id' => $data->id,
+                'name' => $data->name,
+                'price' => $data->price,
+                'stock' => $data->stock,
+                'sold' => 0,
+                'created_at' => $data->created_at,
+                'updated_at' => $data->updated_at
+            ];
+
             return response()->json([
                 'message' => 'Product created successfully',
-                'data' => $data
+                'data' => $responseData
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -70,18 +94,30 @@ class ProductController extends Controller
     public function show($id)
     {
         try {
-            $data = Product::find($id);
+            $product = Product::with('order')->find($id);
 
-            if (!$data) {
+            if (!$product) {
                 return response()->json([
                     'message' => 'Product not found',
                 ], 404);
             }
 
+            $totalSold = $product->order->sum('pivot.quantity');
+
+            $responseData = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'sold' => $totalSold,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at
+            ];
+
             return response()->json([
                 'message' => 'Product Detail',
-                'data' => $data
-            ]);
+                'data' => $responseData
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to retrieve product: ' . $e->getMessage(),
@@ -113,23 +149,35 @@ class ProductController extends Controller
         }
 
         try {
-            $data = Product::find($id);
+            $product = Product::with('order')->find($id);
 
-            if (!$data) {
+            if (!$product) {
                 return response()->json([
                     'message' => 'Product not found',
                 ], 404);
             }
 
-            $data->name = $request->name ?? $data->name;
-            $data->price = $request->price ?? $data->price;
-            $data->stock = $request->stock ?? $data->stock;
+            $product->name = $request->name ?? $product->name;
+            $product->price = $request->price ?? $product->price;
+            $product->stock = $request->stock ?? $product->stock;
 
-            $data->save();
+            $product->save();
+
+            $totalSold = $product->order->sum('pivot.quantity');
+
+            $responseData = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'sold' => $totalSold,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at
+            ];
 
             return response()->json([
                 'message' => 'Product updated successfully',
-                'data' => $data
+                'data' => $responseData
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -139,25 +187,47 @@ class ProductController extends Controller
         }
     }
 
-    public function destroy($id) {
-        try {
-            $data = Product::find($id);
 
-            if (!$data) {
+    public function destroy($id)
+    {
+        try {
+            $product = Product::with('order')->find($id);
+
+            if (!$product) {
                 return response()->json([
                     'message' => 'Product not found',
                 ], 404);
             }
 
-            $data->delete();
+            foreach ($product->order as $order) {
+                $order->product()->detach($product->id);
+
+                if ($order->product()->count() == 0) {
+                    $order->delete();
+                }
+            }
+
+            $totalSold = $product->order->sum('pivot.quantity');
+
+            $responseData = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'stock' => $product->stock,
+                'sold' => $totalSold,
+                'created_at' => $product->created_at,
+                'updated_at' => $product->updated_at
+            ];
+
+            $product->delete();
 
             return response()->json([
                 'message' => 'Product deleted successfully',
-                'data' => $data
-            ]);
+                'data' => $responseData
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to retrieve product: ' . $e->getMessage(),
+                'message' => 'Failed to delete product: ' . $e->getMessage(),
                 'data' => [],
             ], 500);
         }
