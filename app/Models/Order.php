@@ -9,10 +9,12 @@ class Order extends Model
 {
     use HasFactory;
     protected $table = 'orders';
-    protected $fillable = ['product_id', 'quantity'];
+    protected $fillable = [];
     protected $guarded = [];
 
     public function product() {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsToMany(Product::class, 'order_product', 'order_id', 'product_id')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }

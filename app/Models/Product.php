@@ -13,6 +13,8 @@ class Product extends Model
     protected $guarded = [];
 
     public function order() {
-        return $this->hasMany(Order::class, 'product_id');
+        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')
+                    ->withPivot('quantity')
+                    ->withTimestamps();
     }
 }
